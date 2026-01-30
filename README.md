@@ -1,28 +1,27 @@
-
 # XC Capital — Institutional Cashflow Settlement Infrastructure on Stellar/Soroban
 
 ## Overview
 
-XC Capital provides institutional-grade infrastructure for issuing, accounting, and settling Business Purpose Lending (BPL) cashflows on Stellar via Soroban smart contracts.
+XC Capital is a planned institutional-grade infrastructure for issuing, accounting, and settling Business Purpose Lending (BPL) cashflows on Stellar. By leveraging upcoming **Soroban smart contracts**, the project aims to bridge real-world credit with blockchain efficiency.
 
-The system ensures that real-world credit cashflows are:
+The system is designed to ensure that real-world credit cashflows will be:
 
-- Deterministically reflected on-chain  
-- Issuer-controlled yet transparent to investors  
-- Compliant with regulated asset standards  
+* Deterministically reflected on-chain
+* Issuer-controlled yet transparent to investors
+* Compliant with regulated asset standards
 
-XC Capital is **not** a marketplace, fund wrapper, or speculative token protocol. It is financial infrastructure: plumbing that enables private credit instruments to exist credibly on-chain with verifiable yield computation.
+XC Capital is **not** a marketplace, fund wrapper, or speculative token protocol. It is financial infrastructure: the "plumbing" intended to enable private credit instruments to exist credibly on-chain with verifiable yield computation.
 
 ---
 
 ## Mission
 
-Enable settlement of Business Purpose Lending instruments (10–14% yield notes) with:
+Build a framework to enable settlement of Business Purpose Lending instruments (10–14% yield notes) with:
 
-- Deterministic yield accounting  
-- Transparent investor reporting  
-- Secure issuer execution  
-- Global settlement access  
+* Deterministic yield accounting
+* Transparent investor reporting
+* Secure issuer execution
+* Global settlement access
 
 ---
 
@@ -30,171 +29,172 @@ Enable settlement of Business Purpose Lending instruments (10–14% yield notes)
 
 ### Legacy System
 
-The architecture was initially prototyped on Avalanche using Vyper contracts and Django services. Core logic validated:
+The architecture was initially prototyped on Avalanche using Vyper contracts and Django services. Core logic was validated for:
 
-- Deterministic on-chain yield  
-- Tokenized tranche representation  
-- Issuer-controlled distributions  
-- Read-only investor dashboards  
+* Deterministic on-chain yield
+* Tokenized tranche representation
+* Issuer-controlled distributions
+* Read-only investor dashboards
 
-### Stellar/Soroban Transition
+### Planned Stellar/Soroban Transition
 
-The migration aligns the system with Stellar’s production capabilities:
+The upcoming migration will align the system with Stellar’s production capabilities:
 
-- **SEP-8 Regulated Assets:** protocol-level compliance and transaction gating  
-- **SEP-10 Authentication:** secure Web login for admin/issuer actions  
-- **SEP-24 Anchors:** global fiat/USDC deposits and payouts  
-- **I256 math:** high-precision yield calculations for institutional-grade accounting  
+* **SEP-8 Regulated Assets:** Planned protocol-level compliance and transaction gating.
+* **SEP-10 Authentication:** Proposed secure Web login for admin/issuer actions.
+* **SEP-24 Anchors:** Future integration for global fiat/USDC deposits and payouts.
+* **I256 math:** Implementation of high-precision yield calculations for institutional-grade accounting.
 
 ---
 
 ## Key Innovation
 
-Dual-portal architecture:
+The proposed dual-portal architecture:
 
-1. **Admin Plane (SPV / Operator)**  
-   - Issue BPL instruments  
-   - Trigger investor payouts  
-   - Perform compliance checks  
+1. **Admin Plane (SPV / Operator)** - Tools to issue BPL instruments
+* Mechanisms to trigger investor payouts
+* Automated compliance checks
 
-2. **Investor Plane (Read-only)**  
-   - View balances  
-   - Track accrued yield  
-   - Verify payouts  
 
-All actions maintain a strict separation of duties. Investor private keys are never exposed.
+2. **Investor Plane (Read-only)** - Dashboards to view balances
+* Interface to track accrued yield
+* Verifiable payout history
+
+
+
+All planned actions maintain a strict separation of duties. Investor private keys are never to be exposed.
 
 ---
 
-## Smart Contract Design (Soroban)
+## Smart Contract Design (Proposed Soroban Implementation)
 
-- Multi-instrument accounting  
-- Deterministic yield accrual  
-- Transfer-restricted lifecycle  
-- Issuer-controlled settlement  
+* Multi-instrument accounting
+* Deterministic yield accrual
+* Transfer-restricted lifecycle
+* Issuer-controlled settlement
 
-**Precision Model:**  
-- i128 for storage  
-- I256 for intermediate math  
+**Precision Model:** - `i128` for storage
 
-Contracts focus on **state correctness and yield computation**, not custody or legal compliance.
+* `I256` for intermediate math
+
+Contracts will focus on **state correctness and yield computation**, rather than custody or legal compliance.
 
 ---
 
 ## Compliance Framework
 
-- SEP-8 Regulated Assets: protocol-level transaction approval  
-- Ensures jurisdictional controls and auditability  
-- Replaces prior manual on-chain checks  
+* **SEP-8 Regulated Assets:** Intended for protocol-level transaction approval.
+* Designed to ensure jurisdictional controls and auditability.
+* Objective: Replace prior manual on-chain checks with native Stellar standards.
 
 ---
 
 ## Authentication Model
 
-- SEP-10 Web Authentication for admin portal  
-- Secure identity verification and transaction authorization  
+* **SEP-10 Web Authentication:** Planned for the admin portal.
+* Aimed at providing secure identity verification and transaction authorization.
 
 ---
 
-## Settlement Workflow
+## Settlement Workflow (Concept)
 
-- Investors deposit via SEP-24 anchors  
-- USDC-based yield distributions executed  
-- Recurring micro-distributions processed efficiently  
-- Investors globally can participate without crypto custody complexity  
+* Investors will deposit via SEP-24 anchors.
+* USDC-based yield distributions to be executed on-chain.
+* Recurring micro-distributions to be processed efficiently.
+* Goal: Enable global participation without crypto custody complexity.
 
 ---
 
 ## Air-Gapped Administrative Security
 
-- Administrative transactions drafted in SPV portal  
-- Signed in an isolated, offline environment  
-- Broadcasted securely to Stellar network  
+* Administrative transactions to be drafted in the SPV portal.
+* Signing to be handled in an isolated, offline environment.
+* Secure broadcasting to the Stellar network.
 
-Master keys **never touch the internet**.
-
----
-
-## Cashflow Lifecycle
-
-1. SPV originates a real-world BPL loan  
-2. Corresponding instrument created on Soroban  
-3. Investor positions issued  
-4. Borrower payments occur off-chain  
-5. SPV mirrors payments on-chain  
-6. Yield accrues deterministically  
-7. Distributions executed  
-8. Investors verify outcomes on-chain  
+Master keys are designed to **never touch the internet**.
 
 ---
 
-## Directory Structure
+## Proposed Cashflow Lifecycle
 
-```
+1. SPV originates a real-world BPL loan.
+2. Corresponding instrument to be created on Soroban.
+3. Investor positions to be issued.
+4. Borrower payments occur off-chain.
+5. SPV will mirror payments on-chain.
+6. Yield will accrue deterministically.
+7. Distributions to be executed.
+8. Investors will verify outcomes on-chain.
 
+---
+
+## Directory Structure (Planned)
+
+```text
 xc-capital/
-
 ├── README.md
 ├── contracts/
-│   ├── vyper/                # Legacy specification reference
-│   └── soroban/              # Active Rust servicing engine
+│   ├── vyper/             # Legacy specification reference
+│   └── soroban/           # Future Rust servicing engine (To be built)
 │       ├── src/
 │       ├── tests/
 │       └── Cargo.toml
-├── spv_admin/                # Django backend (Anchor/Auth server)
-├── investor_portal/          # Read-only investor interface
-└── diagrams/                 # Architecture & flow diagrams
+├── spv_admin/             # Planned Django backend (Anchor/Auth server)
+├── investor_portal/       # Planned read-only investor interface
+└── diagrams/              # Architecture & flow diagrams
 
 ```
 
 ---
 
-## Deployment & Testing
+## Deployment & Testing Roadmap
 
-- **Networks:** Soroban Testnet / Futurenet  
-- **Framework:** soroban-sdk test utilities  
-- High-precision interest simulations  
-- Settlement flow validation  
+* **Target Networks:** Soroban Testnet / Futurenet
+* **Framework:** `soroban-sdk` test utilities
+* Planned high-precision interest simulations.
+* Planned settlement flow validation.
 
 ---
 
 ## Intended Use Cases
 
-- Business Purpose Lending (BPL)  
-- Private credit markets  
-- Structured debt instruments  
-- Asset-backed notes  
-- Institutional RWA pilots  
+* Business Purpose Lending (BPL)
+* Private credit markets
+* Structured debt instruments
+* Asset-backed notes
+* Institutional RWA pilots
 
 ---
 
 ## Design Principles
 
-- Cashflow integrity over token hype  
-- Issuer control over automation  
-- Deterministic accounting over governance  
-- Compliance alignment over abstraction  
-- Security over convenience  
+* Cashflow integrity over token hype
+* Issuer control over automation
+* Deterministic accounting over governance
+* Compliance alignment over abstraction
+* Security over convenience
 
 ---
 
 ## Status
 
-- Core accounting logic validated  
-- Soroban migration in progress  
-- Compliance integration underway  
-- Testnet deployment planned  
+* **Core accounting logic:** Validated (Legacy)
+* **Soroban migration:** In planning / Pre-development
+* **Compliance integration:** Under research
+* **Testnet deployment:** Scheduled
 
 ---
 
 ## Legacy Reference
 
-The architecture and logic were initially prototyped on Avalanche (see [legacy repo](https://github.com/neonmercenary/rwa-structured-finance-infra/)).  
-All core accounting and settlement mechanisms have been preserved in this intended Stellar/Soroban migration.
+The architecture and logic were initially prototyped on Avalanche (see [legacy repo](https://github.com/neonmercenary/rwa-structured-finance-infra/)).
+
+All core accounting and settlement mechanisms are intended to be preserved in this upcoming Stellar/Soroban migration.
 
 ---
 
 ## Disclaimer
 
-This repository provides infrastructure tooling and does not constitute an investment offering. Regulatory compliance is the responsibility of the issuer.
+This repository is intended to provide infrastructure tooling and does not constitute an investment offering. Regulatory compliance is the responsibility of the issuer.
 
+---
