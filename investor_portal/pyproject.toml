@@ -1,0 +1,19 @@
+[project]
+name = "rwa"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "aioipfs>=0.7.1",
+    "ape-alchemy>=0.8.10",
+    "ape-avalanche>=0.8.1",
+    "ape-optimism>=0.8.3",
+    "ape-vyper>=0.8.9",
+    "celery>=5.6.2",
+    "django>=6.0.1",
+    "django-celery-beat>=2.1.0",
+    "eth-ape>=0.8.45",
+    "python-decouple>=3.8",
+    "tenacity>=9.1.2",
+]

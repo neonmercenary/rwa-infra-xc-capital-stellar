@@ -1,0 +1,64 @@
+{% extends "app/base.html" %}
+{% block content %}
+
+<h2>{{ loan.loan_id }} — {{ loan.title }}</h2>
+<p class="text-muted">Investor view</p>
+
+<hr>
+
+<p><strong>Borrower:</strong> {{ loan.borrower }}</p>
+<p><strong>Principal:</strong> ${{ loan.principal }}</p>
+<p><strong>APR:</strong> {{ loan.annual_interest_rate }}%</p>
+<p><strong>Monthly Interest (est.):</strong> ${{ loan.monthly_interest }}</p>
+
+<hr>
+
+<h4>Investment Terms</h4>
+
+<p>
+  <strong>Total Slices:</strong> {{ loan.total_slices }}<br>
+  <strong>Price per Slice:</strong> ${{ loan.unit_price_usdc }} USDC
+</p>
+
+{% if not loan.tokenized %}
+  <div class="alert alert-warning">
+    This loan is not yet available for on-chain investment.
+  </div>
+{% else %}
+
+<hr>
+
+<h4>Buy Slices</h4>
+
+<form method="post" action="{% url 'rwa:buy_slices' loan.loan_id %}">
+  {% csrf_token %}
+
+  <div class="mb-3">
+    <label class="form-label">Your Name</label>
+    <input name="name" class="form-control" required>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Email</label>
+    <input name="email" type="email" class="form-control" required>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Wallet Address</label>
+    <input name="wallet" class="form-control" required>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Slices</label>
+    <input name="slices" type="number" min="1" class="form-control" required>
+  </div>
+
+  <button class="btn btn-primary">
+    Build Transaction
+  </button>
+
+</form>
+
+{% endif %}
+
+{% endblock %}

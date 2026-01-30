@@ -1,0 +1,19 @@
+{% extends "app/base.html" %}
+{% block content %}
+<h3>Cashflow History</h3>
+<table class="table">
+  <tr><th>Date</th><th>Amount</th><th>Tx</th></tr>
+  {% for ev in cashflows %}
+    <tr>
+      <td>{{ ev.created_at }}</td>
+      <td>${{ ev.amount }}</td>
+      <td>
+        {% if ev.tx_hash %}
+        <a href="https://testnet.snowtrace.io/tx/{{ev.tx_hash}}" target="_blank">Tx</a>
+        {% endif %}
+      </td>
+    </tr>
+  {% endfor %}
+</table>
+<p>Total Cashflow: ${{ total_cashflow }}</p>
+{% endblock %}

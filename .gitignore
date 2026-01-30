@@ -204,4 +204,49 @@ cython_debug/
 # Marimo
 marimo/_static/
 marimo/_lsp/
-__marimo__/
+__marimo__
+
+
+
+# Ape stuff
+.build/
+.cache/
+
+# Python
+.env
+.venv
+.pytest_cache
+.python-version
+__pycache__
+.ipynb_
+key
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.env
+*.venv
+*.pytest_cache/
+*.mypy_cache/
+*.coverage
+*.abi
+*.bin
+
+# Django
+*.sqlite3
+/staticfiles/
+media/
+db.sqlite3
+*.log
+
+# VSCode / IDE
+.vscode/
+.idea/
+*.swp
+.DS_Store
+
+# Soroban / Rust
+target/
+

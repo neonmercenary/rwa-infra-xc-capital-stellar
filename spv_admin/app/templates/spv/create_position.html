@@ -1,0 +1,21 @@
+<!-- templates/spv/create_position.html -->
+{% extends "app/base.html" %}
+{% block content %}
+<h2>Create Position</h2>
+
+<form method="post" class="mb-3">
+  {% csrf_token %}
+  
+  <label>Investor</label>
+  <select name="investor" class="form-select" required>
+    {% for inv in investors %}
+      <option value="{{ inv.id }}">{{ inv.name }} ({{ inv.wallet_address }})</option>
+    {% endfor %}
+  </select>
+
+  <label>Slices</label>
+  <input type="number" name="slices" min="1" required class="form-control">
+
+  <button class="btn btn-primary mt-2">Allocate Position</button>
+</form>
+{% endblock %}

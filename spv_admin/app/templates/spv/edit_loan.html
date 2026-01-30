@@ -1,0 +1,132 @@
+{% extends "app/base.html" %}
+{% block content %}
+
+<h2>Edit Loan: {{ loan.loan_id }}</h2>
+
+<form method="post" class="mt-4">
+    {% csrf_token %}
+
+    <fieldset class="mb-4">
+        <legend class="fs-5 mb-3">Loan Details</legend>
+
+        <div class="mb-3">
+            <label for="loan_id" class="form-label">Loan ID</label>
+            <input type="text" class="form-control" id="loan_id" name="loan_id" required value="{{ loan.loan_id }}" maxlength="64">
+        </div>
+
+        <div class="mb-3">
+            <label for="title" class="form-label">Loan Title</label>
+            <input type="text" class="form-control" id="title" name="title" required value="{{ loan.title }}" maxlength="300">
+        </div>
+
+        <div class="mb-3">
+            <label for="borrower" class="form-label">Borrower Name</label>
+            <input type="text" class="form-control" id="borrower" name="borrower" required value="{{ loan.borrower }}" maxlength="200">
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label for="principal" class="form-label">Principal (UPB)</label>
+                    <input type="number" class="form-control" id="principal" name="principal" required value="{{ loan.principal|stringformat:".2f" }}" step="0.01">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label for="annual_interest_rate" class="form-label">Annual Interest Rate (%)</label>
+                    <input type="number" class="form-control" id="annual_interest_rate" name="annual_interest_rate" required value="{{ loan.annual_interest_rate }}" step="0.01">
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label for="term_months" class="form-label">Term (Months)</label>
+                    <input type="number" class="form-control" id="term_months" name="term_months" required value="{{ loan.term_months }}">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label for="monthly_payment" class="form-label">Monthly Payment</label>
+                    <input type="number" class="form-control" id="monthly_payment" name="monthly_payment" required value="{{ loan.monthly_payment|stringformat:".2f" }}" step="0.01">
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label for="start_date" class="form-label">Start Date</label>
+                    <input type="date" class="form-control" id="start_date" name="start_date" required value="{{ start_date }}">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label for="maturity_date" class="form-label">Maturity Date</label>
+                    <input type="date" class="form-control" id="maturity_date" name="maturity_date" required value="{{ maturity_date }}">
+                </div>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label for="status" class="form-label">Status</label>
+            <select class="form-select" id="status" name="status">
+                <option value="performing" {% if loan.status == 'performing' %}selected{% endif %}>Performing</option>
+                <option value="delinquent" {% if loan.status == 'delinquent' %}selected{% endif %}>Delinquent</option>
+                <option value="default" {% if loan.status == 'default' %}selected{% endif %}>Default</option>
+                <option value="paid_off" {% if loan.status == 'paid_off' %}selected{% endif %}>Paid Off</option>
+            </select>
+        </div>
+    </fieldset>
+
+    <fieldset class="mb-4">
+        <legend class="fs-5 mb-3">Blockchain Configuration</legend>
+
+        <div class="mb-3">
+            <label for="total_slices" class="form-label">Total Slices</label>
+            <input type="number" class="form-control" id="total_slices" name="total_slices" value="{{ loan.total_slices }}">
+        </div>
+
+        <div class="mb-3">
+            <label for="unit_price_usdc" class="form-label">Unit Price (USDC)</label>
+            <input type="number" class="form-control" id="unit_price_usdc" name="unit_price_usdc" value="{{ loan.unit_price_usdc|stringformat:".2f" }}" step="0.01">
+        </div>
+
+        <div class="mb-3">
+            <label for="token_contract" class="form-label">Token Contract Address</label>
+            <input type="text" class="form-control" id="token_contract" name="token_contract" value="{{ loan.token_contract|default_if_none:'' }}">
+        </div>
+
+        <div class="mb-3">
+            <label for="metadata_cid" class="form-label">Metadata CID</label>
+            <input type="text" class="form-control" id="metadata_cid" name="metadata_cid" value="{{ loan.metadata_cid|default_if_none:'' }}">
+        </div>
+    </fieldset>
+
+    <div class="d-flex gap-2">
+        <button type="submit" class="btn btn-primary">Update Loan</button>
+        <a href="{% url 'rwa:spv_dashboard' %}" class="btn btn-secondary">Cancel</a>
+    </div>
+</form>
+
+<script>
+    // Keep your existing maturity date auto-calc script here
+    const startDateInput = document.getElementById('start_date');
+    const termInput = document.getElementById('term_months');
+    const maturityInput = document.getElementById('maturity_date');
+
+    function updateMaturity() {
+        if (startDateInput.value && termInput.value) {
+            const startDate = new Date(startDateInput.value);
+            const months = parseInt(termInput.value) || 0;
+            const maturityDate = new Date(startDate.getFullYear(), startDate.getMonth() + months, startDate.getDate());
+            maturityInput.valueAsDate = maturityDate;
+        }
+    }
+
+    startDateInput.addEventListener('change', updateMaturity);
+    termInput.addEventListener('change', updateMaturity);
+</script>
+
+{% endblock %}

@@ -1,0 +1,64 @@
+<!-- templates/public/loans.html --> 
+{% extends 'app/base.html' %}
+
+{% block content %}
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Available Cashflow Notes</h1>
+    <span class="badge bg-light text-dark border">Marketplace Live</span>
+  </div>
+
+  <div class="row">
+    {% for loan in loans %}
+      <div class="col-md-6 col-lg-4 p-2">
+        <div class="card h-100 shadow-sm border-0">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+              <h5 class="card-title mb-0 text-primary">{{ loan.loan_id }}</h5>
+              {% if loan.tokenized %}
+                <span class="badge rounded-pill bg-success-soft text-success border border-success" style="background-color: #e8f5e9;">
+                  ⛓️ On-Chain
+                </span>
+              {% else %}
+                <span class="badge rounded-pill bg-light text-muted border">Off-Chain</span>
+              {% endif %}
+            </div>
+            
+            <h6 class="card-subtitle mb-3 text-muted">{{ loan.title }}</h6>
+
+            <div class="row g-2 mb-3">
+              <div class="col-6">
+                <small class="text-uppercase text-muted d-block">Principal</small>
+                <strong>${{ loan.principal }}</strong>
+              </div>
+              <div class="col-6">
+                <small class="text-uppercase text-muted d-block">Monthly Pay</small>
+                <strong>${{ loan.monthly_payment }}</strong>
+              </div>
+            </div>
+
+            <div class="d-grid mt-4">
+              <a href="{% url 'rwa:loan_detail' loan.loan_id %}" class="btn btn-primary">
+                {% if loan.tokenized %}Verify & View Details{% else %}View Details{% endif %}
+              </a>
+            </div>
+          </div>
+          
+          <div class="card-footer bg-white border-top-0 pb-3">
+            <small class="text-muted">
+              Status: <span class="text-capitalize">{{ loan.status }}</span>
+            </small>
+          </div>
+        </div>
+      </div>
+    {% empty %}
+      <div class="col-12 text-center py-5">
+        <p class="text-muted">No cashflow notes are currently available for funding.</p>
+      </div>
+    {% endfor %}
+  </div>
+
+  <style>
+    .card { transition: transform 0.2s ease-in-out; }
+    .card:hover { transform: translateY(-5px); }
+  </style>
+{% endblock %}

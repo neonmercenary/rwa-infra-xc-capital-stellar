@@ -1,0 +1,94 @@
+{% extends 'app/base.html' %}
+
+{% block content %}
+  <div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-2">
+      <h2 class="mb-0">Investor Positions</h2>
+      <a href="?export=csv" class="btn btn-sm btn-outline-secondary"><i class="bi bi-download"></i> Download CSV</a>
+    </div>
+
+    <p class="text-muted mb-4">
+      Wallet Address: <code>{{ wallet }}</code>
+    </p>
+
+    <table class="table table-sm table-bordered align-middle">
+      <thead class="table-light">
+        <tr>
+          <th style="width: 25%;">Loan</th>
+          <th>Property</th>
+          <th>Slices</th>
+          <th>
+            Claimable Yield
+            <span class="badge rounded-pill bg-info text-dark" style="font-size: 0.7rem;">Live On-Chain</span>
+          </th>
+          <th>Maturity & Progress</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for pos in positions %}
+          <tr>
+            <td>
+              <strong>{{ pos.loan.loan_id }}</strong><br />
+              <small class="text-muted">{{ pos.loan.title }}</small>
+            </td>
+
+            <td>
+              {{ pos.loan.borrower }}
+              {% if pos.loan.property_city %}
+                <br /><small class="text-muted">{{ pos.loan.property_city }}</small>
+              {% endif %}
+            </td>
+
+            <td>{{ pos.slices_owned }}</td>
+
+            <td class="text-success">
+              <strong>{{ pos.balance_due|floatformat:4 }}</strong>
+              <small class="text-muted">USDC</small>
+              {% if pos.onchain_yield > 0 %}
+                <i class="bi bi-patch-check-fill text-info" title="Verified On-Chain"></i>
+              {% endif %}
+            </td>
+
+            <td>
+              <div class="mb-1">{{ pos.loan.maturity_date|date:'Y-m-d' }}</div>
+              <div style="min-width: 120px;">
+                <div class="d-flex justify-content-between" style="font-size: 0.7rem;">
+                  <span class="text-muted">Progress</span>
+                  <span class="text-muted">{{ pos.loan.progress_percentage }}%</span>
+                </div>
+                <div class="progress" style="height: 6px;">
+                  <div class="progress-bar bg-primary" role="progressbar" style="width: {{ pos.loan.progress_percentage }}%"></div>
+                </div>
+              </div>
+            </td>
+
+            <td>
+              {% if pos.loan.is_matured %}
+                <span class="badge bg-secondary">Matured</span>
+                <br /><small class="text-success">Awaiting Payout</small>
+              {% else %}
+                <span class="badge bg-info text-dark">Locked</span>
+                <br /><small class="text-muted">{{ pos.loan.days_remaining }}d left</small>
+              {% endif %}
+            </td>
+          </tr>
+        {% empty %}
+          <tr>
+            <td colspan="6" class="text-center py-4 text-muted">No positions found for this wallet.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <div class="mt-4 border-top pt-3">
+      <p class="text-muted small">
+        • <strong>Private Credit Model:</strong> Positions represent tokenized interests in real-estate backed debt.<br />
+        • <strong>Yield:</strong> Accrues from borrower cashflows and is verified via Avalanche smart contracts.<br />
+        • <strong>Withdrawal:</strong> Principal and interest repayment is handled off-chain at maturity.<br />
+        • <strong>Restrictions:</strong> Tokens are non-transferable and subject to a hold-to-maturity mandate.
+      </p>
+    </div>
+  </div>
+{% endblock %}

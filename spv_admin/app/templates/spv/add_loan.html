@@ -1,0 +1,171 @@
+<!-- templates/spv/add_loan.html -->
+{% extends "app/base.html" %}
+{% block content %}
+
+<h2>Add New Loan</h2>
+
+<form method="post" class="mt-4">
+    {% csrf_token %}
+
+    <!-- INSTITUTIONAL ANCHOR SECTION -->
+    <fieldset class="mb-4">
+        <legend class="fs-5 mb-3">Loan Details</legend>
+
+        <div class="mb-3">
+            <label for="loan_id" class="form-label">Loan ID</label>
+            <input type="text" class="form-control" id="loan_id" name="loan_id" required
+                placeholder="e.g., LOAN-2026-001" maxlength="64">
+            <div class="form-text">Unique identifier for this loan.</div>
+        </div>
+
+        <div class="mb-3">
+            <label for="title" class="form-label">Loan Title</label>
+            <input type="text" class="form-control" id="title" name="title" required
+                placeholder="e.g., Commercial Real Estate - Manhattan" maxlength="300">
+        </div>
+
+        <div class="mb-3">
+            <label for="borrower" class="form-label">Borrower Name</label>
+            <input type="text" class="form-control" id="borrower" name="borrower" required
+                placeholder="e.g., ABC Development Corp" maxlength="200">
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label for="principal" class="form-label">Principal (UPB)</label>
+                    <input type="number" class="form-control" id="principal" name="principal" required
+                        placeholder="1000000.00" step="0.01" min="0">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label for="annual_interest_rate" class="form-label">Annual Interest Rate (%)</label>
+                    <input type="number" class="form-control" id="annual_interest_rate" name="annual_interest_rate"
+                        required placeholder="5.50" step="0.01" min="0" max="100">
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label for="term_months" class="form-label">Term (Months)</label>
+                    <input type="number" class="form-control" id="term_months" name="term_months" required
+                        placeholder="360" min="1">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label for="monthly_payment" class="form-label">Monthly Payment</label>
+                    <input type="number" class="form-control" id="monthly_payment" name="monthly_payment" required
+                        placeholder="5368.91" step="0.01" min="0">
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label for="start_date" class="form-label">Start Date</label>
+                    <input type="date" class="form-control" id="start_date" name="start_date" required>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label for="maturity_date" class="form-label">Maturity Date</label>
+                    <input type="date" class="form-control" id="maturity_date" name="maturity_date" required>
+                </div>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label for="status" class="form-label">Status</label>
+            <select class="form-select" id="status" name="status">
+                <option value="performing" selected>Performing</option>
+                <option value="delinquent">Delinquent</option>
+                <option value="default">Default</option>
+                <option value="paid_off">Paid Off</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="tokenization_spec" class="form-label">Tokenization Settings</label>
+            <select class="form-select" id="tokenization_spec" name="tokenization_spec">
+                <option value="">-- Select Tokenization Spec --</option>
+                {% for spec in tokenization_specs %}
+                <option value="{{ spec.id }}" selected>{{ spec.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </fieldset>
+
+    <!-- BLOCKCHAIN SECTION -->
+    <fieldset class="mb-4">
+        <legend class="fs-5 mb-3">Blockchain Configuration</legend>
+
+        <div class="mb-3">
+            <label for="tranches" class="form-label">Tranche</label>
+            <select class="form-control" id="tranches" name="tranches">
+                <option value="false">No Tranche</option>
+                <option value="true">With Tranche</option>
+            </select>
+            <div class="form-text">Tranche based or single tranche.</div>
+        </div>
+        
+        <div class="mb-3">
+            <label for="total_slices" class="form-label">Total Slices</label>
+            <input type="number" class="form-control" id="total_slices" name="total_slices" value="100" min="1">
+            <div class="form-text">Number of slices to divide the loan into for investor ownership.</div>
+        </div>
+
+        <div class="mb-3">
+            <label for="unit_price_usdc" class="form-label">Unit Price (USDC)</label>
+            <input type="number" class="form-control" id="unit_price_usdc" name="unit_price_usdc" value="100.00"
+                step="0.01" min="0">
+            <div class="form-text">Price per slice in USDC.</div>
+        </div>
+
+        <div class="mb-3">
+            <label for="token_contract" class="form-label">Token Contract Address (Optional)</label>
+            <input type="text" class="form-control" id="token_contract" name="token_contract" placeholder="0x..."
+                maxlength="128">
+            <div class="form-text">Leave blank for now. Will be populated after tokenization on Avalanche.</div>
+        </div>
+
+        <div class="mb-3">
+            <label for="metadata_cid" class="form-label">Metadata CID (Optional)</label>
+            <input type="text" class="form-control" id="metadata_cid" name="metadata_cid" placeholder="Qm..."
+                maxlength="100">
+            <div class="form-text">IPFS content identifier for loan metadata.</div>
+        </div>
+
+    </fieldset>
+
+    <!-- SUBMIT SECTION -->
+    <div class="d-flex gap-2">
+        <button type="submit" class="btn btn-primary">Create Loan</button>
+        <a href="{% url 'rwa:spv_dashboard' %}" class="btn btn-secondary">Cancel</a>
+    </div>
+</form>
+
+<script>
+    // Auto-calculate maturity date based on term_months and start_date
+    document.getElementById('start_date').addEventListener('change', function () {
+        const startDate = new Date(this.value);
+        const months = parseInt(document.getElementById('term_months').value) || 0;
+        const maturityDate = new Date(startDate.getFullYear(), startDate.getMonth() + months, startDate.getDate());
+        document.getElementById('maturity_date').valueAsDate = maturityDate;
+    });
+
+    document.getElementById('term_months').addEventListener('change', function () {
+        const startDate = new Date(document.getElementById('start_date').value);
+        if (startDate) {
+            const months = parseInt(this.value) || 0;
+            const maturityDate = new Date(startDate.getFullYear(), startDate.getMonth() + months, startDate.getDate());
+            document.getElementById('maturity_date').valueAsDate = maturityDate;
+        }
+    });
+</script>
+
+{% endblock %}

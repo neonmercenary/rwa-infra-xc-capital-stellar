@@ -1,0 +1,62 @@
+<!-- templates/spv/dashboard.html -->
+{% extends "app/base.html" %}
+{% block content %}
+
+<h2>SPV Dashboard</h2>
+<p class="text-muted">Issuer control panel</p>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Loan</th>
+      <th>Status</th>
+      <th>On-Chain</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+
+    {% for loan in loans %}
+    <tr>
+      <td>
+        <strong>{{ loan.loan_id }}</strong><br>
+        <small>{{ loan.title }}</small>
+      </td>
+
+      <td>{{ loan.status }}</td>
+
+      <td>
+        {% if loan.tokenized %}
+          <span class="badge bg-success">Yes</span>
+        {% else %}
+          <span class="badge bg-secondary">No</span>
+        {% endif %}
+      </td>
+
+      <td>
+        <div class="space-x-2"> 
+        <a href="{% url 'rwa:spv_loan_detail' loan.loan_id %}"
+           class="btn btn-sm btn-outline-primary">
+          Open
+        </a>
+        <a href="{% url 'rwa:spv_edit_loan' loan.loan_id %}"
+           class="btn btn-sm btn-outline-warning">
+          Edit
+        </a>
+        <a href="{% url 'rwa:spv_loan_delete' loan.loan_id %}"
+           class="btn btn-sm btn-outline-danger">
+          Delete
+        </a>
+      </td>
+    </div>
+    </tr>
+    {% empty %}
+      <tr>
+        <td colspan="4">No loans available.</td>
+      </tr>
+    {% endfor %}
+
+  </tbody>
+</table>
+
+{% endblock %}

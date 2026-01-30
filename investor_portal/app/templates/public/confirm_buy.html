@@ -1,0 +1,22 @@
+<script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+
+<script>
+async function buy() {
+    const txData = JSON.parse('{{ tx|safe }}');
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = provider.getSigner();
+
+    await window.ethereum.request({ method: "eth_requestAccounts" });
+
+    const tx = await signer.sendTransaction({
+        to: txData.to,
+        data: txData.data,
+        value: txData.value || 0,
+        gasLimit: txData.gas
+    });
+
+    alert("Transaction Sent: " + tx.hash);
+}
+</script>
+
+<button onclick="buy()">Buy With MetaMask</button>

@@ -1,0 +1,26 @@
+{% extends "app/base.html" %}
+{% block content %}
+<body class="bg-light">
+  <div class="container py-5">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="card shadow">
+          <div class="card-body">
+            <h5 class="card-title mb-3">View Your Holdings</h5>
+            <form id="holdingsForm" method="post" action="">
+              {% csrf_token %}
+              <div class="mb-3">
+                <label for="wallet" class="form-label">Paste your wallet address</label>
+                <input type="text" class="form-control" id="wallet" name="wallet"
+                       placeholder="0x1234…AbCd" required>
+              </div>
+              <button type="submit" class="btn btn-primary w-100">Show Holdings</button>
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

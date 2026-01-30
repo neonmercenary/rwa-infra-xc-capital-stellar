@@ -1,0 +1,86 @@
+<!-- templates/spv/loan_detail.html -->
+{% extends "app/base.html" %}
+{% block content %}
+
+<h2>{{ loan.loan_id }} — {{ loan.title }}</h2>
+
+<hr>
+
+<p><strong>Borrower:</strong> {{ loan.borrower }}</p>
+<p><strong>Principal:</strong> ${{ loan.principal }}</p>
+<p><strong>APR:</strong> {{ loan.annual_interest_rate }}%</p>
+<p><strong>Monthly Interest:</strong> ${{ loan.monthly_interest }}</p>
+<p><strong>Term:</strong> {{ loan.term_months }} months.</p>
+
+<hr>
+
+<h4>On-Chain Status</h4>
+
+{% if loan.tokenized %}
+  <p>
+    <span class="badge bg-success">Tokenized</span><br>
+    <small>
+      Contract: <a target="_blank" href="https://testnet.snowtrace.io/address/{{ loan.token_contract }}">View on blockchain</a><br>
+      Token ID: {{ loan.token_id }}<br>
+      Total Slices: {{ loan.total_slices }}<br>
+      Distributed Slices: {{ slices_distributed }}<br>
+    </small>
+
+  </p>
+{% else %}
+  <a href="{% url 'rwa:review_tokenization' loan.loan_id %}"
+     class="btn btn-warning">
+    Review & Tokenize
+  </a>
+{% endif %}
+
+<hr>
+
+<h4>Distribute Monthly Cashflow</h4>
+
+<form action="{% url 'rwa:distribute_payment' loan.loan_id %}"
+      method="post"
+      class="mb-4">
+  {% csrf_token %}
+  <button class="btn btn-primary">
+    Distribute Payment
+  </button>
+</form>
+
+<hr>
+
+<h4>Investor Positions</h4>
+
+<a href="{% url 'rwa:create_investor_position' loan.loan_id %}"
+   class="btn btn-sm btn-outline-secondary mb-2">
+  Add / Adjust Position
+</a>
+
+<table class="table table-sm">
+  <thead>
+    <tr>
+      <th>Investor</th>
+      <th>Slices</th>
+      <th>%</th>
+      <th>Balance Due</th>
+      <th>Transaction Hash</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for pos in positions %}
+    <tr>
+      <td><a href="{% url 'rwa:investor_view' pos.investor.wallet_address %}">{{ pos.investor.name }}</a></td>
+      <td>{{ pos.slices_owned }}</td>
+      <td>{{ pos.ownership_percent|floatformat:3 }}%</td>
+      <td>${{ pos.balance_due|floatformat:6 }}</td>
+      <td><a target="_blank" href="https://testnet.snowtrace.io/tx/{{ pos.tx_hash }}">View on blockchain</a></td>
+    </tr>
+    {% empty %}
+    <tr>
+      <td colspan="4">No positions.</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}

@@ -1,0 +1,11 @@
+eth-ape==0.8.1
+ape-vyper
+ape-alchemy
+ape-avalanche
+ape-lisk
+ape-plume
+ethpm-types
+python-dotenv
+eth-utils
+django
+django-environ

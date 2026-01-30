@@ -1,0 +1,58 @@
+name: spv
+
+plugins:
+  - name: vyper
+  - name: avalanche
+  - name: alchemy
+  - name: optimism
+
+default_ecosystem: avalanche
+
+
+vyper:
+  evm_version: paris
+  search_paths:
+    - ./contracts
+
+project:
+  paths:
+    contracts: ./contracts
+
+networks:
+  avalanche:
+    fuji:
+      # Alchemy stays your default for everything else
+      default_provider: alchemy
+  custom:
+    - name: lisk
+      chain_id: 1135
+      ecosystem: lisk
+      base_ecosystem_plugin: optimism
+      default_provider: node
+    - name: plume
+      chain_id: 98866
+      ecosystem: plume
+      base_ecosystem_plugin: ethereum
+      default_provider: node
+
+# Configure the 'node' provider to use the public Fuji RPC
+node:
+  avalanche:
+    fuji:
+      uri: https://api.avax-test.network/ext/bc/C/rpc
+  lisk:
+    lisk:
+      uri: https://rpc.api.lisk.com
+  plume:
+    plume:
+      uri: https://rpc.plume.org
+
+alchemy:
+  avalanche:
+    fuji:
+      uri: https://avax-fuji.g.alchemy.com/v2/$WEB3_ALCHEMY_API_KEY
+
+etherscan:
+  avalanche:
+    fuji:
+      uri: https://api-testnet.snowtrace.io/api

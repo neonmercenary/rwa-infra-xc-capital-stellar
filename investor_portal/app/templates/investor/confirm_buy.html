@@ -1,0 +1,27 @@
+{% extends "app/base.html" %}
+{% block content %}
+
+<h3>Confirm Investment</h3>
+<p class="text-muted">Sign the transaction using your wallet</p>
+
+<hr>
+
+<p>
+  <strong>Loan:</strong> {{ loan.loan_id }}<br>
+  <strong>Slices:</strong> {{ tx.args.units }}<br>
+</p>
+
+<pre class="bg-light p-3 border rounded">
+{{ tx|safe }}
+</pre>
+
+<p class="text-muted">
+  This transaction will be signed locally by your wallet.
+  Your private key is never shared.
+</p>
+
+<button class="btn btn-success">
+  Sign in Wallet
+</button>
+
+{% endblock %}

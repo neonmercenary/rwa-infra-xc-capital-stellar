@@ -1,0 +1,32 @@
+{% extends "app/base.html" %}
+{% block content %}
+<h2>Review Tokenization for {{ loan.loan_id }}</h2>
+<div class="alert alert-info">
+    <strong>Transparency Check:</strong> Review the data below. Once committed to the Avalanche blockchain, these terms become immutable (cannot be changed).
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <h4>Blockchain Parameters</h4>
+        <table class="table">
+            <tr><th>Token ID:</th><td>{{ loan.id|add:1000 }}</td></tr>
+            <tr><th>Initial Supply:</th><td>{{ loan.total_slices }} units</td></tr>
+            <tr><th>Unit Price:</th><td>${{ loan.unit_price_usdc }} (USDC)</td></tr>
+            <tr><th>Metadata Fingerprint (SHA256):</th><td><code>{{ fingerprint }}</code></td></tr>
+        </table>
+    </div>
+    <div class="col-md-6">
+        <h4>Metadata Preview (IPFS)</h4>
+        <pre class="bg-dark text-light p-3 rounded" style="font-size: 0.8rem;">{{ metadata_json }}</pre>
+    </div>
+</div>
+
+<form action="{% url 'rwa:confirm_tokenize_loan' loan.loan_id %}" method="post">
+    {% csrf_token %}
+    <input type="hidden" name="fingerprint" value="{{ fingerprint }}">
+    <div class="d-flex justify-content-between mt-4">
+        <a href="{% url 'rwa:spv_loan_detail' loan.loan_id %}" class="btn btn-secondary">Cancel</a>
+        <button type="submit" class="btn btn-danger btn-lg">Confirm & Sign Transaction</button>
+    </div>
+</form>
+{% endblock %}
