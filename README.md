@@ -189,7 +189,7 @@ xc-capital/
 
 ## Legacy Reference
 
-The architecture and logic were initially prototyped on Avalanche (see [legacy repo](https://github.com/yourusername/oldrepo)).  
+The architecture and logic were initially prototyped on Avalanche (see [legacy repo](https://github.com/neonmercenary/rwa-structured-finance-infra/)).  
 All core accounting and settlement mechanisms have been preserved in this Stellar/Soroban migration.
 
 ---
@@ -197,4 +197,4 @@ All core accounting and settlement mechanisms have been preserved in this Stella
 ## Disclaimer
 
 This repository provides infrastructure tooling and does not constitute an investment offering. Regulatory compliance is the responsibility of the issuer.
-```
+
